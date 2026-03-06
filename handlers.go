@@ -94,5 +94,5 @@ func handleCounter(c *gin.Context) {
 		Prefix:    prefix,
 	})
 	c.String(http.StatusOK, svg)
-	LogDebug("ip: " + c.ClientIP() + ", name: " + name + ", theme: " + theme + ", user-agent: " + c.Request.UserAgent() + ", referrer: " + c.Request.Referer())
+	LogDebug("ip: " + strconv.Quote(c.ClientIP()) + ", name: " + strconv.Quote(name) + ", theme: " + strconv.Quote(theme) + ", user-agent: " + strconv.Quote(c.Request.UserAgent()) + ", referrer: " + strconv.Quote(c.Request.Referer()))
 }
