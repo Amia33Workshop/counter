@@ -37,16 +37,6 @@ func setupRouter() *gin.Engine {
 		})
 	})
 	router.GET("/@:name", handleCounter)
-	router.GET("/get/@:name", handleCounter)
-	router.GET("/record/@:name", func(c *gin.Context) {
-		name := c.Param("name")
-		counter, err := getCountByName(name, 0)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, counter)
-	})
 	router.GET("/heart-beat", func(c *gin.Context) {
 		c.String(http.StatusOK, "alive")
 	})

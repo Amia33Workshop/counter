@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"net/http"
+	"regexp"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +21,11 @@ type getCountImageOptions struct {
 	Prefix    int
 }
 
+var validName = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
+
 func handleCounter(c *gin.Context) {
 	name := c.Param("name")
-	if len(name) > 32 {
+	if !validName.MatchString(name) || len(name) > 32 {
 		c.String(http.StatusBadRequest, "Invalid name")
 		return
 	}
