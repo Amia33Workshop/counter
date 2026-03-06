@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"strconv"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -57,7 +56,7 @@ func getCountByName(name string, num int) (Counter, error) {
 		var counterFromDB Counter
 		err := collection.FindOne(context.Background(), bson.D{{Key: "name", Value: name}}).Decode(&counterFromDB)
 		if err != nil && err != mongo.ErrNoDocuments {
-			LogError("Error getting count from DB for", strconv.Quote(name), ":", err)
+			LogError("Error getting count from DB for", name, ":", err)
 			return Counter{}, err
 		}
 		currentNum = counterFromDB.Num
