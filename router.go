@@ -20,8 +20,11 @@ func setupRouter() *gin.Engine {
 	})
 	router.LoadHTMLGlob("templates/*")
 	router.Static("/assets", "./assets")
-	router.GET("/script.js", func(c *gin.Context) {
-		c.File("./assets/script.js")
+	router.GET("/script.min.js", func(c *gin.Context) {
+		c.File("./assets/script.min.js")
+	})
+	router.GET("/favicon.ico", func(c *gin.Context) {
+		c.File("./assets/favicon.ico")
 	})
 	router.GET("/style.less", func(c *gin.Context) {
 		c.File("./assets/style.less")
