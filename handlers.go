@@ -24,11 +24,11 @@ type getCountImageOptions struct {
 var validName = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
 
 func handleCounter(c *gin.Context) {
-	name := c.Param("name")
-	if !validName.MatchString(name) || len(name) > 32 {
+	if !validName.MatchString(c.Param("name")) || len(c.Param("name")) > 32 {
 		c.String(http.StatusBadRequest, "Invalid name")
 		return
 	}
+	name := c.Param("name")
 	theme := c.DefaultQuery("theme", "moebooru")
 	if theme == "random" {
 		keys := make([]string, 0, len(themeList))
