@@ -24,7 +24,7 @@ type getCountImageOptions struct {
 var validName = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
 
 func handleCounter(c *gin.Context) {
-	name := c.Param("name")
+	name := SanitizeLogString(c.Param("name"))
 	if !validName.MatchString(name) || len(name) > 32 {
 		c.String(http.StatusBadRequest, "Invalid name")
 		return
@@ -94,5 +94,11 @@ func handleCounter(c *gin.Context) {
 		Prefix:    prefix,
 	})
 	c.String(http.StatusOK, svg)
-	LogDebug("ip:", c.ClientIP(), "name:", name, "theme:", theme, "user-agent:", c.Request.UserAgent(), "referrer:", c.Request.Referer())
+	LogDebug(
+		"ip:", SanitizeLogString(c.ClientIP()),
+		"name:", name,
+		"theme:", SanitizeLogString(theme),
+		"user-agent:", SanitizeLogString(c.Request.UserAgent()),
+		"referrer:", SanitizeLogString(c.Request.Referer()),
+	)
 }
