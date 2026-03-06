@@ -28,7 +28,7 @@ func pushCacheToDB() {
 	var operations []mongo.WriteModel
 	for name, num := range counterCache {
 		model := mongo.NewUpdateOneModel().
-			SetFilter(bson.M{"name": name}).
+			SetFilter(bson.D{{Key: "name", Value: name}}).
 			SetUpdate(bson.M{"$set": bson.M{"num": num}}).
 			SetUpsert(true)
 		operations = append(operations, model)
@@ -54,7 +54,7 @@ func getCountByName(name string, num int) (Counter, error) {
 	currentNum, inCache := counterCache[name]
 	if !inCache {
 		var counterFromDB Counter
-		err := collection.FindOne(context.Background(), bson.M{"name": name}).Decode(&counterFromDB)
+		err := collection.FindOne(context.Background(), bson.D{{Key: "name", Value: name}}).Decode(&counterFromDB)
 		if err != nil && err != mongo.ErrNoDocuments {
 			LogErrorf("Error getting count from DB for %s: %v", name, err)
 			return Counter{}, err
