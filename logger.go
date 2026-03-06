@@ -38,11 +38,6 @@ func LogDebug(v ...interface{}) {
 		log.Println(v...)
 	}
 }
-func LogDebugf(format string, v ...interface{}) {
-	if currentLogLevel >= LevelDebug {
-		log.Printf(format, v...)
-	}
-}
 func LogInfo(v ...interface{}) {
 	if currentLogLevel >= LevelInfo {
 		log.Println(v...)
@@ -56,10 +51,5 @@ func LogWarn(v ...interface{}) {
 func LogError(v ...interface{}) {
 	if currentLogLevel >= LevelError {
 		log.Println(v...)
-	}
-}
-func LogErrorf(format string, v ...interface{}) {
-	if currentLogLevel >= LevelError {
-		log.Printf(format, v...)
 	}
 }

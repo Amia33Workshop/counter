@@ -36,7 +36,7 @@ func pushCacheToDB() {
 	if len(operations) > 0 {
 		_, err := collection.BulkWrite(context.Background(), operations)
 		if err != nil {
-			LogErrorf("Error pushing cache to DB: %v", err)
+			LogError("Error pushing cache to DB:", err)
 		} else {
 			counterCache = make(map[string]int)
 		}
@@ -56,7 +56,7 @@ func getCountByName(name string, num int) (Counter, error) {
 		var counterFromDB Counter
 		err := collection.FindOne(context.Background(), bson.D{{Key: "name", Value: name}}).Decode(&counterFromDB)
 		if err != nil && err != mongo.ErrNoDocuments {
-			LogErrorf("Error getting count from DB for %s: %v", name, err)
+			LogError("Error getting count from DB for", name, ":", err)
 			return Counter{}, err
 		}
 		currentNum = counterFromDB.Num

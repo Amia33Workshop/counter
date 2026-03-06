@@ -74,7 +74,7 @@ func main() {
 	}
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			LogErrorf("listen: %s\n", err)
+			LogError("listen:", err)
 		}
 	}()
 	quit := make(chan os.Signal, 1)
