@@ -36,7 +36,11 @@ func setupRouter() *gin.Engine {
 	router.GET("/@:name", handleCounter)
 	router.GET("/get/@:name", handleCounter)
 	router.GET("/record/@:name", func(c *gin.Context) {
-		name := c.Param("name")
+		name, ok := sanitizeName(c.Param("name"))
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid name"})
+			return
+		}
 		counter, err := getCountByName(name, 0)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

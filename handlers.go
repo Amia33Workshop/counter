@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,9 +21,30 @@ type getCountImageOptions struct {
 	Prefix    int
 }
 
+// sanitizeName validates the counter name obtained from the request path.
+// It enforces length and a conservative character whitelist so that only
+// simple identifier-like names are allowed to reach the database layer.
+func sanitizeName(raw string) (string, bool) {
+	if len(raw) == 0 || len(raw) > 32 {
+		return "", false
+	}
+	for _, r := range raw {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			continue
+		}
+		switch r {
+		case '-', '_', '.':
+			continue
+		default:
+			return "", false
+		}
+	}
+	return raw, true
+}
+
 func handleCounter(c *gin.Context) {
-	name := c.Param("name")
-	if len(name) > 32 {
+	name, ok := sanitizeName(c.Param("name"))
+	if !ok {
 		c.String(http.StatusBadRequest, "Invalid name")
 		return
 	}
