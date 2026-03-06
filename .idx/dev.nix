@@ -20,7 +20,12 @@
       enable = false;
     };
     workspace = {
-      onCreate = { };
+      onCreate = {
+        download = "go mod download";
+        tidy = "go mod tidy";
+        verify = "go mod verify";
+        default.openFiles = [ "templates/index.html" ];
+      };
       onStart = { };
     };
   };
