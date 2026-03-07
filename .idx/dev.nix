@@ -7,7 +7,6 @@
     pkgs.gnupg
     pkgs.openssh
   ];
-  env = { };
   idx = {
     extensions = [
       "mhutchie.git-graph"
@@ -16,9 +15,6 @@
       "google.gemini-cli-vscode-ide-companion"
       "golang.Go"
     ];
-    previews = {
-      enable = false;
-    };
     workspace = {
       onCreate = {
         download = "go mod download";
@@ -26,7 +22,7 @@
         verify = "go mod verify";
         default.openFiles = [ "templates/index.html" ];
       };
-      onStart = { };
+      onStart = { default.openFiles = [ "templates/index.html" ]; };
     };
   };
 }
